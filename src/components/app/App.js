@@ -1,4 +1,4 @@
-import {Component} from 'react';
+import {useState} from 'react';
 import AppHeader from "../appHeader/AppHeader";
 import RandomChar from "../randomChar/RandomChar";
 import CharList from "../charList/CharList";
@@ -8,56 +8,38 @@ import ErrorBoundary from '../errorBoundary/ErrorBoundary';
 import decoration from '../../resources/img/vision.png';
 
 
-class Amp extends Component {
-    render() {
-        return (
-        <div>
-            {this.props.children}
-        </div>
-        
-        )     
-    }
-}
 
-const Amps = (tir) =>  {
-    return (
-        <h2>{`qoirb`}</h2>
-    )
+
+const App = () =>  {
+    const [selectedChar, setSelectedChar] = useState(null);
     
-}
 
-class App extends Component {
-
-    state= {
-        selectedChar: null
-    }
-
-    onCharSelected = (id) => {
-        this.setState({
-            selectedChar: id
-        });
+    const onCharSelected = (id) => {
+        setSelectedChar(id);
     };
 
-    render () {
-        return (
-            <div className="app">
-            <AppHeader/>
-            <main>
-                <Amp>
-                    <Amps tir='Истина'/>
-                </Amp>
+   
+    return (
+        <div className="app">
+        <AppHeader/>
+        <main>
+            <ErrorBoundary>
                 <RandomChar/>
-                <div className="char__content">
-                    <CharList onCharSelected={this.onCharSelected}/>
-                    <ErrorBoundary>
-                        <CharInfo charId = {this.state.selectedChar}/>
-                    </ErrorBoundary>
+            </ErrorBoundary>
+            
+            <div className="char__content">
+                <ErrorBoundary>
+                    <CharList onCharSelected={onCharSelected}/>
+                </ErrorBoundary> 
+                <ErrorBoundary>
+                    <CharInfo charId = {selectedChar}/>
+                </ErrorBoundary>
                 </div>
                 <img className="bg-decoration" src={decoration} alt="vision"/>
             </main>
         </div>
      )
-    }
+    
 }
 
 export default App;
