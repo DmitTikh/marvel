@@ -1,26 +1,26 @@
 import {useState, useEffect, useRef} from 'react';
-import Spinner from '../spinner/Spinner';
 import PropTypes from 'prop-types';
+
+import Spinner from '../spinner/Spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import useMarvelService from '../../services/MarvelService';
 import './charList.scss';
 
-const CharList =(props) => {
+const CharList = (props) => {
 
-    const [charList, setCharList] = useState([]),
-          [newItemLoading, setNewItemLoading] = useState(false),
-          [offset, setOffset] = useState(210),
-          [charEnded, setCharEnded] = useState(false);
-    
+    const [charList, setCharList] = useState([]);
+    const [newItemLoading, setNewItemLoading] = useState(false);
+    const [offset, setOffset] = useState(210);
+    const [charEnded, setCharEnded] = useState(false);
+
     const {loading, error, getAllCharacters} = useMarvelService();
 
     useEffect(() => {
         onRequest(offset, true);
     }, [])
 
-
     const onRequest = (offset, initial) => {
-        initial ? setNewItemLoading(false): setNewItemLoading(true);
+        initial ? setNewItemLoading(false) : setNewItemLoading(true);
         getAllCharacters(offset)
             .then(onCharListLoaded)
     }
@@ -51,7 +51,6 @@ const CharList =(props) => {
         itemRefs.current[id].classList.add('char__item_selected');
         itemRefs.current[id].focus();
     }
-    
 
     // Этот метод создан для оптимизации, 
     // чтобы не помещать такую конструкцию в метод render
@@ -95,7 +94,6 @@ const CharList =(props) => {
 
     const errorMessage = error ? <ErrorMessage/> : null;
     const spinner = loading && !newItemLoading ? <Spinner/> : null;
-   
 
     return (
         <div className="char__list">
